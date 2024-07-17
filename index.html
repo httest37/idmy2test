@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"><title>IDMY2Library サンプル</title>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th>ライブラリ</th>
+        <td><button onClick='testInitialize()'>Initialize</button></td>
+        <td><button onClick='testDeinitialize()'>Deinitialize</button></td>
+      </tr>
+      <tr>
+        <th>EMV</th>
+        <td><button onClick='testEmvInitialize()'>EmvInitialize</button></td>
+        <td><button onClick='testEmvDeinitialize()'>EmvDeinitialize</button></td>
+      </tr>
+      <tr>
+        <th>EMV カード</th>
+        <td><button onClick='testEmvTranCardRead()'>EmvTranCardRead</button></td>
+        <td><button onClick='testEmvTran1stGac()'>EmvTran1stGac</button></td>
+      </tr>
+      <tr>
+        <th>　　　　　　　</th>      
+        <td><button onClick='testEmvTran2ndGac()'>EmvTran2ndGac</button></td>
+      </tr>
+      <tr>
+        <th>個人認証</th>
+        <td><button onClick='testCertInitialize()'>CertInitialize</button></td>
+        <td><button onClick='testCertDeinitialize()'>CertDeinitialize</button></td>
+      </tr>
+      <tr>
+        <th>　　　　　　　</th>      
+        <td><button onClick='testCertGetCardStatus()'>CertGetCardStatus</button></td>
+      </tr> 
+      <tr>
+        <th>マイナンバーカード</th>
+        <td><button onClick='testCertGetCollationTrialAllowableCount()'>CertGetCollation<br>TrialAllowableCount</button></td>
+        <td><button onClick='testCertGetPrintInformation()'>CertGetPrintInformation</button></td>
+      </tr>
+      <tr>
+        <th>　　　　　　　</th>
+        <td><button onClick='testCertGetBasic4InformationForConfirmation()'>CertGetBasic4Information<br>ForConfirmation</button></td>
+        <td><button onClick='testCertGetBasic4InformationForInputAssistance()'>CertGetBasic4Information<br>ForInputAssistance</button></td>
+        <td></td>
+      </tr>
+      <tr>
+        <th>　　　　　　　</th>
+        <td><button onClick='testCertGetMyNumberForConfirmation()'>CertGetMyNumberFor<br>Confirmation</button></td>
+        <td><button onClick='testCertGetMyNumberForInputAssistance()'>CertGetMyNumberFor<br>InputAssistance</button></td>
+      </tr>
+      <tr>
+        <th>　　　　　　　</th>
+        <td><button onClick='testCertGetMyNumberCardFacePhoto()'>CertGetMyNumberCardFacePhoto</button></td>
+      </tr>
+      <tr>
+        <th>免許証・在留カード</th>
+        <td><button onClick='testCertGetDriversLicenseInformation()'>CertGetDriversLicenseInformation</button></td>
+        <td><button onClick='testCertGetResidenceCardInformation()'>CertGetResidenceCardInformation</button></td>
+      </tr>
+      <tr>
+        <th>デバイス</th>
+        <td><button onClick='testDeviceGetBatteryLevel()'>DeviceGetBatteryLevel</button></td>
+        <td><button onClick='testDeviceGetFirmwareVersion()'>DeviceGetFirmwareVersion</button></td>
+      </tr>
+      <tr>
+        <th>　　　　　　　</th>
+        <td><button onClick='testDeviecGetSerialNumber()'>DeviecGetSerialNumber</button></td>
+      </tr>
+    </table>
+    <p>
+      <textarea id="message" cols="100" rows="20"></textarea>
+    </p>
+
+    <script src="./idmy2Library.js"></script>
+    <script type="text/javascript">
+
+      function onSuccess() {
+          message("success.");
+      }
+
+      function onSuccessResult(result) {
+        message("success " + result);
+      }
+
+      function onSuccessResultJson(result) {
+        message("success " + JSON.stringify(result, null, "\t"));
+      }
+
+      function onFailure(error) {
+          message("エラー" + error);
+      }
+
+      function message(text) {
+        var messageTextarea = document.getElementById("message");
+        messageTextarea.value += text + "\n";
+        messageTextarea.scrollTop = messageTextarea.scrollHeight;
+      }
+
+      function messageImage(image) {
+        var messageTextarea = document.getElementById("message");
+        messageTextarea.value += "image" + "\n";  
+        messageTextarea.scrollTop = messageTextarea.scrollHeight;
+      }
+      
+      function testInitialize() {
+        message("idmy2Initialize ... ");
+        idmy2Initialize("SERIALNUMBER", onSuccess, onFailure);
+      }
+
+      function testDeinitialize() {
+        message("idmy2Deinitialize ... ");
+        idmy2Deinitialize(onSuccess, onFailure);
+      }
+
+      function testEmvInitialize() {
+        message("idmy2EmvInitialize ... ");
+        idmy2EmvInitialize(onSuccess, onFailure);
+      }
+
+      function testEmvDeinitialize() {
+        message("idmy2EmvDeinitialize ... ");
+        idmy2EmvDeinitialize(onSuccess, onFailure);
+      }
+
+      function testEmvTranCardRead() {
+        message("idmy2EmvTranCardRead ... ");
+        idmy2EmvTranCardRead({
+          fallbackType: 0,
+          detectType: 0,
+          cardTimeout: 0,
+          selectTimeout: 0,
+          separatorType: 0,
+          amount: "",
+          transactionType: ""
+        }, onSuccessResultJson, onFailure);
+      }
+
+      function testEmvTran1stGac() {
+        message("idmy2EmvTran1stGac ... ");
+        idmy2EmvTran1stGac({
+          selAvailableInfo: null,
+          payWay: 0,
+          timeout: 0,
+          kid: ""
+        }, onSuccessResultJson, onFailure);
+      }
+
+      function testEmvTran2ndGac() {
+        message("idmy2EmvTran2ndGac ... ");
+        idmy2EmvTran2ndGac({
+          responseCode: "",
+          icData: null
+        }, onSuccessResultJson, onFailure);
+      }
+
+      function testCertInitialize() {
+        message("idmy2CertInitialize ... ");
+        idmy2CertInitialize(onSuccess, onFailure);
+      }
+
+      function testCertDeinitialize() {
+        message("idmy2CertDeinitialize ... ");
+        idmy2CertDeinitialize(onSuccess, onFailure);
+      }
+
+      function testCertGetCardStatus() {
+        message("idmy2CertGetCardStatus ... ");
+        idmy2CertGetCardStatus(onSuccessResult, onFailure);
+      }
+
+      function testCertGetCollationTrialAllowableCount() {
+        message("idmy2CertGetCollationTrialAllowableCount(IDMY2_CERT_KEY_MYNUMBERCARD_PW_PRINT_READ) ... ");
+        idmy2CertGetCollationTrialAllowableCount(IDMY2_CERT_KEY_MYNUMBERCARD_PW_PRINT_READ, 
+          onSuccessResult, onFailure);
+      }
+
+      function testCertGetPrintInformation() {
+        message("idmy2CertGetPrintInformation ... ");
+        idmy2CertGetPrintInformation("19910203", "1234", "5678", onSuccessResultJson, onFailure);
+      }
+
+      function testCertGetBasic4InformationForConfirmation() {
+        message("idmy2CertGetBasic4InformationForConfirmation ... ");
+        idmy2CertGetBasic4InformationForConfirmation("19910203", "1234", "5678", onSuccessResultJson, onFailure);
+      }
+
+      function testCertGetBasic4InformationForInputAssistance() {
+        message("idmy2CertGetBasic4InformationForInputAssistance ... ");
+        idmy2CertGetBasic4InformationForInputAssistance("19910203", "1234", "5678", onSuccessResultJson, onFailure);
+      }
+
+      function testCertGetMyNumberForConfirmation() {
+        message("idmy2CertGetMyNumberForConfirmation ... ");
+        idmy2CertGetMyNumberForConfirmation("1234", onSuccessResultJson, onFailure);
+      }
+
+      function testCertGetMyNumberForInputAssistance() {
+        message("idmy2CertGetMyNumberForInputAssistance ... ");
+        idmy2CertGetMyNumberForInputAssistance("1234", onSuccessResult, onFailure);
+      }
+
+      function testCertGetMyNumberCardFacePhoto() {
+        message("idmy2CertGetMyNumberCardFacePhoto ... ");
+        idmy2CertGetMyNumberCardFacePhoto("19910203", "1234", "5678", onSuccessResultJson, onFailure);
+      }
+
+      function testCertGetDriversLicenseInformation() {
+        message("idmy2CertGetDriversLicenseInformation ... ");
+        idmy2CertGetDriversLicenseInformation("1234","5678", onSuccessResultJson, onFailure);
+      }
+
+      function testCertGetResidenceCardInformation() {
+        message("idmy2CertGetResidenceCardInformation ... ");
+        idmy2CertGetResidenceCardInformation("1234", onSuccessResultJson, onFailure);
+      }
+
+      function testDeviceGetBatteryLevel() {
+        message("idmy2DeviceGetBatteryLevel ... ");
+        idmy2DeviceGetBatteryLevel(onSuccessResult, onFailure);
+      }
+
+      function testDeviceGetFirmwareVersion() {
+        message("idmy2DeviceGetFirmwareVersion ... ");
+        idmy2DeviceGetFirmwareVersion(onSuccessResult, onFailure);
+      }
+
+      function testDeviecGetSerialNumber() {
+        message("idmy2DeviecGetSerialNumber ... ");
+        idmy2DeviceGetSerialNumber(onSuccessResult, onFailure);
+      }
+
+      function testReadingMSCard() {
+        message("Test reading ms card.");
+
+        message("idmy2Initialize.");
+        idmy2Initialize("", () => {
+      
+          message("idmy2EmvInitialize.");
+          idmy2EmvInitialize(() => {
+      
+            readMS();
+      
+          }, error => {
+            idmy2Deinitialize(onSuccess, onFailure);
+          });
+        }, onFailure);
+      }
+
+      function readMS() {
+        message("idmy2EmvTranCardRead ... ");
+        idmy2EmvTranCardRead({      
+          fallbackType: 0,
+          detectType: 1,
+          cardTimeout: 0,
+          separatorType: 0,
+          amount: "",
+          transactionType: ""
+        }, result => {
+          message("result " + JSON.stringify(result, null, "\t"));
+          readMS();
+        }, error => {
+          message("read error.");
+          readMS();
+        });
+      }
+      
+      window.onload = testReadingMSCard;
+    </script>
+  </body>
+</html>
