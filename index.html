@@ -129,7 +129,6 @@
           fallbackType: 0,
           detectType: 0,
           cardTimeout: 0,
-          selectTimeout: 0,
           separatorType: 0,
           amount: "",
           transactionType: ""
@@ -229,43 +228,6 @@
         message("idmy2DeviecGetSerialNumber ... ");
         idmy2DeviceGetSerialNumber(onSuccessResult, onFailure);
       }
-
-      function testReadingMSCard() {
-        message("Test reading ms card.");
-
-        message("idmy2Initialize.");
-        idmy2Initialize("", () => {
-      
-          message("idmy2EmvInitialize.");
-          idmy2EmvInitialize(() => {
-      
-            readMS();
-      
-          }, error => {
-            idmy2Deinitialize(onSuccess, onFailure);
-          });
-        }, onFailure);
-      }
-
-      function readMS() {
-        message("idmy2EmvTranCardRead ... ");
-        idmy2EmvTranCardRead({      
-          fallbackType: 0,
-          detectType: 1,
-          cardTimeout: 0,
-          separatorType: 0,
-          amount: "",
-          transactionType: ""
-        }, result => {
-          message("result " + JSON.stringify(result, null, "\t"));
-          readMS();
-        }, error => {
-          message("read error.");
-          readMS();
-        });
-      }
-      
-      window.onload = testReadingMSCard;
     </script>
   </body>
 </html>
